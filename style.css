@@ -19,22 +19,23 @@ canvas {
 
 /* 🔥 ADD / FIX THIS */
 #controls {
-  position: absolute;
-  bottom: 30px;
+  position: fixed;   /* 🔥 change from absolute → fixed */
+  bottom: 20px;      /* stick to bottom */
+  left: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
   box-sizing: border-box;
-  z-index: 20; /* VERY IMPORTANT */
+  z-index: 100;      /* ensure it's above everything */
 }
 
 #controls button {
-  font-size: 30px;
-  padding: 20px 30px;
+  font-size: 28px;
+  padding: 18px 28px;
   border: none;
   border-radius: 12px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.5);  /* darker = more visible */
   color: white;
 }
 
