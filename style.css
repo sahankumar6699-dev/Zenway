@@ -17,34 +17,27 @@ canvas {
   z-index: 10;
 }
 
-h1 {
-  margin: 0;
-  font-size: 24px;
-}
-
-#distance {
-  margin-top: 5px;
-}
-
+/* 🔥 ADD / FIX THIS */
 #controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
   box-sizing: border-box;
+  z-index: 20; /* VERY IMPORTANT */
 }
 
 #controls button {
   font-size: 30px;
-  padding: 15px 25px;
+  padding: 20px 30px;
   border: none;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.3);
   color: white;
 }
 
 #controls button:active {
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.6);
 }
