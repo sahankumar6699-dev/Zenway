@@ -55,6 +55,15 @@ document.addEventListener("keyup", (e) => {
   if (e.key === "ArrowRight" || e.key === "d") moveRight = false;
 });
 
+//Keyboard listeners 
+const leftBtn = document.getElementById("leftBtn");
+const rightBtn = document.getElementById("rightBtn");
+
+leftBtn.addEventListener("touchstart", () => moveLeft = true);
+leftBtn.addEventListener("touchend", () => moveLeft = false);
+
+rightBtn.addEventListener("touchstart", () => moveRight = true);
+rightBtn.addEventListener("touchend", () => moveRight = false);
 // Distance
 let distance = 0;
 
