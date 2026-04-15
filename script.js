@@ -1,6 +1,15 @@
 const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x000000, 10, 200);
 
+//Touch steering update
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+const steering = document.getElementById("steering");
+
+if (isTouchDevice) {
+  steering.style.display = "block";
+}
+
 // Camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 
