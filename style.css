@@ -35,8 +35,13 @@ canvas {
   padding: 18px 28px;
   border: none;
   border-radius: 12px;
-  background: rgba(0,0,0,0.5);  /* darker = more visible */
+  background: rgba(0,0,0,0.5);
   color: white;
+
+  /* 🔥 FIXES MOBILE ISSUE */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 #controls button:active {
