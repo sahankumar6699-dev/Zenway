@@ -68,25 +68,33 @@ document.addEventListener("keyup", (e) => {
 const leftBtn = document.getElementById("leftBtn");
 const rightBtn = document.getElementById("rightBtn");
 
-leftBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();  
-  moveLeft = true;
-});
+//Steering Controls
+let steeringActive = false;
+let startX = 0;
 
-leftBtn.addEventListener("touchend", (e) => {
-  e.preventDefault();
-  moveLeft = false;
-});
+const wheel = document.getElementById("wheel");
 
-rightBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  moveRight = true;
-});
+if (isTouchDevice) {
+  wheel.addEventListener("pointerdown", (e) => {
+    steeringActive = true;
+    startX = e.clientX;
+  });
 
-rightBtn.addEventListener("touchend", (e) => {
-  e.preventDefault();
-  moveRight = false;
-});
+  window.addEventListener("pointermove", (e) => {
+    if (!steeringActive) return;
+
+    let delta = e.clientX - startX;
+
+    // sensitivity
+    targetX += delta * 0.005;
+
+    startX = e.clientX;
+  });
+
+  window.addEventListener("pointerup", () => {
+    steeringActive = false;
+  });
+}
 // Distance
 let distance = 0;
 
