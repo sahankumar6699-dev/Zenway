@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: black;
+}
+
+canvas {
+  display: block;
+}
+
+#ui {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  z-index: 10;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+#distance {
+  margin-top: 5px;
+}
