@@ -25,3 +25,26 @@ h1 {
 #distance {
   margin-top: 5px;
 }
+
+#controls {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+#controls button {
+  font-size: 30px;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+#controls button:active {
+  background: rgba(255,255,255,0.5);
+}
