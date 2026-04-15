@@ -80,16 +80,20 @@ if (isTouchDevice) {
     startX = e.clientX;
   });
 
-  window.addEventListener("pointermove", (e) => {
-    if (!steeringActive) return;
+  let wheelAngle = 0;
 
-    let delta = e.clientX - startX;
+window.addEventListener("pointermove", (e) => {
+  if (!steeringActive) return;
 
-    // sensitivity
-    targetX += delta * 0.005;
+  let delta = e.clientX - startX;
 
-    startX = e.clientX;
-  });
+  targetX += delta * 0.005;
+
+  wheelAngle += delta * 0.3;
+  wheel.style.transform = `rotate(${wheelAngle}deg)`;
+
+  startX = e.clientX;
+});
 
   window.addEventListener("pointerup", () => {
     steeringActive = false;
