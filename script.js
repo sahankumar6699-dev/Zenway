@@ -43,6 +43,7 @@ camera.position.set(0, 2, 5);
 let speed = 0.2;
 let moveLeft = false;
 let moveRight = false;
+let targetX = 0;
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" || e.key === "a") moveLeft = true;
@@ -65,8 +66,14 @@ function animate() {
   requestAnimationFrame(animate);
 
   // Movement
-  if (moveLeft) car.position.x -= 0.1;
-  if (moveRight) car.position.x += 0.1;
+  if (moveLeft) targetX -= 0.15;
+  if (moveRight) targetX += 0.15;
+
+  // Clamp target
+  targetX = Math.max(-4, Math.min(4, targetX));
+
+  // Smooth movement
+  car.position.x += (targetX - car.position.x) * 0.1;
 
   // Clamp car position
   car.position.x = Math.max(-4, Math.min(4, car.position.x));
