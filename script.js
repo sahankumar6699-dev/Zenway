@@ -69,30 +69,31 @@ const leftBtn = document.getElementById("leftBtn");
 const rightBtn = document.getElementById("rightBtn");
 
 //Steering Controls
-let steeringActive = false;
-let startX = 0;
+let wheelAngle = 0;
+let lastX = 0;
 
-const wheel = document.getElementById("wheel");
-
-if (isTouchDevice) {
-  wheel.addEventListener("pointerdown", (e) => {
-    steeringActive = true;
-    startX = e.clientX;
-  });
-
-  let wheelAngle = 0;
+wheel.addEventListener("pointerdown", (e) => {
+  steeringActive = true;
+  lastX = e.clientX;
+});
 
 window.addEventListener("pointermove", (e) => {
   if (!steeringActive) return;
 
-  let delta = e.clientX - startX;
+  let delta = e.clientX - lastX;
 
-  targetX += delta * 0.005;
+  // steering sensitivity
+  targetX += delta * 0.01;
 
-  wheelAngle += delta * 0.3;
+  // rotate wheel
+  wheelAngle += delta * 0.5;
   wheel.style.transform = `rotate(${wheelAngle}deg)`;
 
-  startX = e.clientX;
+  lastX = e.clientX;
+});
+
+window.addEventListener("pointerup", () => {
+  steeringActive = false;
 });
 
   window.addEventListener("pointerup", () => {
