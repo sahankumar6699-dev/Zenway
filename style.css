@@ -17,25 +17,45 @@ canvas {
   z-index: 10;
 }
 
-/* Steering container */
 #steering {
   position: fixed;
-  bottom: 40px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
+  display: none;
   z-index: 100;
-  display: none; /* hidden by default */
 }
 
-/* Steering wheel */
 #wheel {
   width: 100%;
   height: 100%;
-  border: 5px solid white;
   border-radius: 50%;
-  background: rgba(0,0,0,0.4);
-
+  border: 6px solid rgba(255,255,255,0.9);
+  background: radial-gradient(circle, rgba(255,255,255,0.1), rgba(0,0,0,0.6));
+  position: relative;
   touch-action: none;
+}
+
+/* steering spokes */
+#wheel::before,
+#wheel::after {
+  content: "";
+  position: absolute;
+  background: rgba(255,255,255,0.7);
+}
+
+#wheel::before {
+  width: 4px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#wheel::after {
+  height: 4px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
 }
