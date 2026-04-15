@@ -59,11 +59,25 @@ document.addEventListener("keyup", (e) => {
 const leftBtn = document.getElementById("leftBtn");
 const rightBtn = document.getElementById("rightBtn");
 
-leftBtn.addEventListener("touchstart", () => moveLeft = true);
-leftBtn.addEventListener("touchend", () => moveLeft = false);
+leftBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();  
+  moveLeft = true;
+});
 
-rightBtn.addEventListener("touchstart", () => moveRight = true);
-rightBtn.addEventListener("touchend", () => moveRight = false);
+leftBtn.addEventListener("touchend", (e) => {
+  e.preventDefault();
+  moveLeft = false;
+});
+
+rightBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveRight = true;
+});
+
+rightBtn.addEventListener("touchend", (e) => {
+  e.preventDefault();
+  moveRight = false;
+});
 // Distance
 let distance = 0;
 
