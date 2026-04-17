@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Zenway</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="ui">
+    <div id="distance">0 m</div>
+  </div>
 
-<div id="ui">
-  <h1>Zenway</h1>
-  <p id="distance">Distance: 0 m</p>
-</div>
+  <!-- Mobile Steering Wheel -->
+  <div id="steering-container">
+    <div id="steering-wheel"></div>
+  </div>
 
-<!-- Steering wheel (mobile only) -->
-<div id="steering">
-  <div id="wheel"></div>
-</div>
+  <canvas id="game"></canvas>
 
-<canvas id="game"></canvas>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.158/build/three.min.js"></script>
-<script src="script.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
