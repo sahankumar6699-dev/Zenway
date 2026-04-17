@@ -7,18 +7,19 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="ui">
-    <div id="distance">0 m</div>
-  </div>
 
-  <!-- Mobile Steering Wheel -->
-  <div id="steering-container">
-    <div id="steering-wheel"></div>
-  </div>
+<div id="ui">
+  <div id="distance">0 m</div>
+</div>
 
-  <canvas id="game"></canvas>
+<div id="steering-container">
+  <div id="steering-wheel"></div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
-  <script src="script.js"></script>
+<canvas id="game"></canvas>
+
+<!-- IMPORTANT: use module version to avoid black screen issues -->
+<script type="module" src="script.js"></script>
+
 </body>
 </html>
