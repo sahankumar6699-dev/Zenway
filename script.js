@@ -1,73 +1,81 @@
-// BASIC SETUP
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js";
+
+// ===== SAFE INIT (prevents black screen) =====
 const canvas = document.getElementById("game");
+
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+scene.fog = new THREE.Fog(0x87ceeb, 30, 200);
 
-// Fog
-scene.fog = new THREE.Fog(0x87ceeb, 20, 150);
-
-// Camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
+const camera = new THREE.PerspectiveCamera(
+  70,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  500
+);
 camera.position.set(0, 5, 10);
 
-// Renderer
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: true,
+  powerPreference: "high-performance"
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// LIGHTING
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-scene.add(ambientLight);
+// ===== LIGHT =====
+scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-dirLight.position.set(5, 10, 7);
-scene.add(dirLight);
+const sun = new THREE.DirectionalLight(0xffffff, 0.8);
+sun.position.set(10, 20, 10);
+scene.add(sun);
 
-// ROAD
+// ===== ROAD =====
 const roadGroup = new THREE.Group();
 scene.add(roadGroup);
 
-const roadMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+const roadMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
 
-function createRoadSegment(z) {
-  const geometry = new THREE.PlaneGeometry(10, 50);
-  const mesh = new THREE.Mesh(geometry, roadMaterial);
+function createRoad(z) {
+  const geo = new THREE.PlaneGeometry(10, 60);
+  const mesh = new THREE.Mesh(geo, roadMat);
   mesh.rotation.x = -Math.PI / 2;
   mesh.position.z = z;
   roadGroup.add(mesh);
 
-  // Lane markings
-  const lineGeo = new THREE.PlaneGeometry(0.2, 50);
-  const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-  const line = new THREE.Mesh(lineGeo, lineMat);
+  // lane line
+  const line = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.2, 60),
+    new THREE.MeshBasicMaterial({ color: 0xffffff })
+  );
   line.rotation.x = -Math.PI / 2;
   line.position.z = z;
-  scene.add(line);
+  line.position.y = 0.01;
+  roadGroup.add(line);
 }
 
-// Create initial road
-for (let i = 0; i < 10; i++) {
-  createRoadSegment(-i * 50);
+// generate road
+for (let i = 0; i < 12; i++) {
+  createRoad(-i * 60);
 }
 
-// CAR
+// ===== CAR =====
 const car = new THREE.Group();
 
 const body = new THREE.Mesh(
-  new THREE.BoxGeometry(1.5, 0.6, 3),
-  new THREE.MeshStandardMaterial({ color: 0xff3333 })
+  new THREE.BoxGeometry(1.6, 0.6, 3),
+  new THREE.MeshStandardMaterial({ color: 0xff4444, metalness: 0.3, roughness: 0.6 })
 );
 body.position.y = 0.5;
 
 car.add(body);
 scene.add(car);
 
-// MOVEMENT
-let speed = 0.5;
+// ===== CONTROLS =====
 let steer = 0;
 let targetSteer = 0;
 
-// KEYBOARD
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" || e.key === "a") targetSteer = -1;
   if (e.key === "ArrowRight" || e.key === "d") targetSteer = 1;
@@ -77,81 +85,82 @@ document.addEventListener("keyup", () => {
   targetSteer = 0;
 });
 
-// MOBILE STEERING
+// MOBILE
 const wheel = document.getElementById("steering-wheel");
-let dragging = false;
+let active = false;
 
-wheel.addEventListener("touchstart", () => dragging = true);
+wheel.addEventListener("touchstart", () => active = true);
 
 wheel.addEventListener("touchmove", (e) => {
-  if (!dragging) return;
+  if (!active) return;
 
   const touch = e.touches[0];
   const rect = wheel.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
+  const center = rect.left + rect.width / 2;
 
-  const delta = (touch.clientX - centerX) / (rect.width / 2);
+  let delta = (touch.clientX - center) / (rect.width / 2);
   targetSteer = THREE.MathUtils.clamp(delta, -1, 1);
 });
 
 wheel.addEventListener("touchend", () => {
-  dragging = false;
+  active = false;
   targetSteer = 0;
 });
 
-// DISTANCE
+// ===== GAME =====
+let speed = 0.6;
 let distance = 0;
 const distanceUI = document.getElementById("distance");
 
-// DAY/NIGHT
 let time = 0;
 
-// ANIMATION LOOP
+// ===== LOOP =====
 function animate() {
   requestAnimationFrame(animate);
 
-  // Smooth steering
-  steer += (targetSteer - steer) * 0.05;
-  car.position.x += steer * 0.2;
+  // smooth steering
+  steer += (targetSteer - steer) * 0.08;
+  car.position.x += steer * 0.25;
 
-  // Move forward
+  // forward
   car.position.z -= speed;
   distance += speed;
   distanceUI.innerText = Math.floor(distance) + " m";
 
-  // Camera follow
+  // camera follow (smooth)
   camera.position.x += (car.position.x - camera.position.x) * 0.05;
   camera.position.z += (car.position.z + 10 - camera.position.z) * 0.05;
   camera.lookAt(car.position);
 
-  // Recycle road
-  roadGroup.children.forEach((road) => {
-    if (road.position.z > car.position.z + 50) {
-      road.position.z -= 500;
+  // recycle road
+  roadGroup.children.forEach((r) => {
+    if (r.position.z > car.position.z + 60) {
+      r.position.z -= 720;
     }
   });
 
-  // Day/Night Cycle
+  // day/night
   time += 0.002;
   const t = (Math.sin(time) + 1) / 2;
 
-  const skyColor = new THREE.Color().lerpColors(
+  const sky = new THREE.Color().lerpColors(
     new THREE.Color(0x000022),
     new THREE.Color(0x87ceeb),
     t
   );
 
-  renderer.setClearColor(skyColor);
-  scene.fog.color = skyColor;
+  scene.background = sky;
+  scene.fog.color = sky;
 
   renderer.render(scene, camera);
 }
 
-// RESIZE
+// ===== RESIZE =====
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+// ===== START =====
 animate();
