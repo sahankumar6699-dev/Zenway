@@ -16,7 +16,6 @@ canvas {
   display: block;
 }
 
-/* UI */
 #ui {
   position: fixed;
   top: 15px;
@@ -26,7 +25,7 @@ canvas {
   z-index: 10;
 }
 
-/* Steering Wheel */
+/* Steering */
 #steering-container {
   position: fixed;
   bottom: 20px;
@@ -46,7 +45,6 @@ canvas {
   touch-action: none;
 }
 
-/* Show only on touch devices */
 @media (hover: none) {
   #steering-container {
     display: block;
